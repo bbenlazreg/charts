@@ -76,7 +76,29 @@ spec:
         {{ $key }}: {{ $value }}
         {{- end }}
 {{- end }}
+      - name: cloudsql-proxy
+        image: gcr.io/cloudsql-docker/gce-proxy:1.11
+        command: ["/cloud_sql_proxy",
+                  "-instances=gl-dsi-ecom-unstable-ia:europe-west1:ggl-cart-blue-nb=tcp:5432",
+                  "-credential_file=/secret/cloudsql/credentials.json"]
+        resources:
+          requests:
+            memory: "20Mi"
+            cpu: "10m"
+          limits:
+            memory: "80Mi"
+            cpu: "50m"
+        securityContext:
+          runAsUser: 2  # non-root user
+          allowPrivilegeEscalation: true
+        volumeMounts:
+          - name: cloudsql-instance-credentials
+            mountPath: /secret/cloudsql
+            readOnly: true
       volumes:
+        - name: cloudsql-instance-credentials
+          secret:
+            secretName: cloudsql-instance-credentials        
         - name: pgbouncer-config
           configMap:
             name: {{ .Release.Name }}-pgbouncer-config

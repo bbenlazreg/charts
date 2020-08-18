@@ -1,4 +1,4 @@
-name: pgbouncer
+name: bpgbouncer
 version: 0.2.0
 description: Chart for PGBouncer
 keywords:
@@ -9,6 +9,6 @@ home: https://pgbouncer.github.io
 sources:
 - https://github.com/clearbit/charts
 maintainers:
-- name: FutureTech Industries
+- name: bbenlazreg
   email: ops@futuretech.industries
 engine: gotpl
